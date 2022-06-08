@@ -73,6 +73,16 @@
         :is-loading="isLoadingContent"
         :is-edit="isEdit"
       />
+                  <!-- Invoice Custom Fields -->
+            <InvoiceCustomFields
+              type="Invoice"
+              :is-edit="isEdit"
+              :is-loading="isLoadingContent"
+              :store="invoiceStore"
+              store-prop="newInvoice"
+              :custom-field-scope="invoiceValidationScope"
+              class="mb-6"
+            />
 
       <BaseScrollPane>
         <!-- Invoice Items -->
@@ -102,16 +112,6 @@
               type="Invoice"
             />
 
-            <!-- Invoice Custom Fields -->
-            <InvoiceCustomFields
-              type="Invoice"
-              :is-edit="isEdit"
-              :is-loading="isLoadingContent"
-              :store="invoiceStore"
-              store-prop="newInvoice"
-              :custom-field-scope="invoiceValidationScope"
-              class="mb-6"
-            />
 
             <!-- Invoice Template Button-->
             <SelectTemplate
