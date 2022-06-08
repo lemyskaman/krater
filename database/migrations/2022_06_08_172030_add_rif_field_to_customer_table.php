@@ -13,8 +13,9 @@ class AddRifFieldToCustomerTable extends Migration
      */
     public function up()
     {
-        Schema::table('customer', function (Blueprint $table) {
+        Schema::table('customers', function (Blueprint $table) {
             //
+            $table->string('rif')->nullable(false);
         });
     }
 
@@ -25,8 +26,8 @@ class AddRifFieldToCustomerTable extends Migration
      */
     public function down()
     {
-        Schema::table('customer', function (Blueprint $table) {
-            //
+        Schema::table('customers', function (Blueprint $table) {
+            $table->dropColumn('rif');
         });
     }
 }
