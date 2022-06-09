@@ -2,6 +2,7 @@
   "navigation": {
     "dashboard": "Tablero",
     "customers": "Clientes",
+    "exchange-rate": "Tasa de Cambio",
     "items": "Artículos",
     "invoices": "Facturas",
     "recurring-invoices": "Facturas recurrentes",

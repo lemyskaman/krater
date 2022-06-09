@@ -290,6 +290,17 @@ return [
             'ability' => 'dashboard',
             'model' => ''
         ],
+        /*
+        [
+            'title' => 'navigation.exchange-rate',
+            'group' => 1,
+            'link' => '/admin/customers',
+            'icon' => 'CashIcon',
+            'name' => 'Exchange Rate',
+            'owner_only' => false,
+            'ability' => 'view-customer',
+            'model' => Customer::class
+        ],*/
         [
             'title' => 'navigation.customers',
             'group' => 1,
