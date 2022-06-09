@@ -65,7 +65,6 @@ class CustomersController extends Controller
     public function show(Customer $customer)
     {
         $this->authorize('view', $customer);
-
         return new CustomerResource($customer);
     }
 
@@ -79,6 +78,7 @@ class CustomersController extends Controller
     public function update(Requests\CustomerRequest $request, Customer $customer)
     {
         $this->authorize('update', $customer);
+
 
         $customer = Customer::updateCustomer($request, $customer);
 

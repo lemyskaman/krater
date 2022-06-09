@@ -30,6 +30,10 @@ class CustomerRequest extends FormRequest
             'name' => [
                 'required',
             ],
+            'rif' => [
+                'required',
+                 Rule::unique('customers', 'rif')->ignore($this->customer)
+            ],
             'email' => [
                 'email',
                 'nullable',
@@ -132,6 +136,7 @@ class CustomerRequest extends FormRequest
         return collect($this->validated())
             ->only([
                 'name',
+                'rif',
                 'email',
                 'currency_id',
                 'password',
