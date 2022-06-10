@@ -705,13 +705,8 @@ class Invoice extends Model implements HasMedia
             $this->status = $this->getPreviousStatus();
             $this->paid_status = Invoice::STATUS_PARTIALLY_PAID;
         }
-        //dd($this);
-        $status  = $this->status .' '. $this->paid_status;
 
         $this->save();
-
-        $current = $this ;
-
     }
 
     public static function deleteInvoices($ids)
