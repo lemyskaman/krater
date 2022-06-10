@@ -18,7 +18,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Vinkla\Hashids\Facades\Hashids;
 
-class Invoice extends Model implements HasMedia
+
+class DeletedInvoice extends Model
 {
     use HasFactory;
     use InteractsWithMedia;
@@ -62,19 +63,11 @@ class Invoice extends Model implements HasMedia
         'invoicePdfUrl',
     ];
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
 
-    public function emailLogs()
-    {
-        return $this->morphMany('App\Models\EmailLog', 'mailable');
-    }
 
     public function items()
     {
-        return $this->hasMany('Crater\Models\InvoiceItem');
+        return $this->hasMany('Crater\Models\DeletedInvoiceItem');
     }
 
     public function taxes()
@@ -377,6 +370,8 @@ class Invoice extends Model implements HasMedia
 
         $total_paid_amount = $this->total - $this->due_amount;
 
+
+
         if ($total_paid_amount > 0 && $this->customer_id !== $request->customer_id) {
             return 'customer_cannot_be_changed_after_payment_is_added';
         }
@@ -395,9 +390,9 @@ class Invoice extends Model implements HasMedia
         $data['base_due_amount'] = $data['due_amount'] * $data['exchange_rate'];
         $data['customer_sequence_number'] = $serial->nextCustomerSequenceNumber;
 
+
         $this->changeInvoiceStatus($data['due_amount']);
-        $data['staus']=$this->status;
-        $data['paid_status'] = $this->paid_status;
+
         $this->update($data);
 
         $company_currency = CompanySetting::getSetting('currency', $request->header('company'));
@@ -592,11 +587,7 @@ class Invoice extends Model implements HasMedia
     {
         $invoiceAsAttachment = CompanySetting::getSetting('invoice_email_attachment', $this->company_id);
 
-        if ($invoiceAsAttachment == 'NO') {
-            return false;
-        }
-
-        return true;
+        return $invoiceAsAttachment !== 'NO';
     }
 
     public function getCompanyAddress()
@@ -697,6 +688,7 @@ class Invoice extends Model implements HasMedia
         if ($amount == 0) {
             $this->status = Invoice::STATUS_COMPLETED;
             $this->paid_status = Invoice::STATUS_PAID;
+
             $this->overdue = false;
         } elseif ($amount == $this->total) {
             $this->status = $this->getPreviousStatus();
@@ -705,27 +697,12 @@ class Invoice extends Model implements HasMedia
             $this->status = $this->getPreviousStatus();
             $this->paid_status = Invoice::STATUS_PARTIALLY_PAID;
         }
-        //dd($this);
-        $status  = $this->status .' '. $this->paid_status;
 
         $this->save();
-
-        $current = $this ;
-
     }
 
-    public static function deleteInvoices($ids)
+    public function save(array $options = [])
     {
-        foreach ($ids as $id) {
-            $invoice = self::find($id);
-
-            if ($invoice->transactions()->exists()) {
-                $invoice->transactions()->delete();
-            }
-
-            $invoice->delete();
-        }
-
-        return true;
+        return parent::save($options);
     }
 }
