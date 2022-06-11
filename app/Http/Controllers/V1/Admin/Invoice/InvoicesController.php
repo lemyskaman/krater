@@ -22,8 +22,12 @@ class InvoicesController extends Controller
         $this->authorize('viewAny', Invoice::class);
 
         $limit = $request->has('limit') ? $request->limit : 10;
-
-        $invoices = Invoice::whereCompany()
+        if ($request->get('status') === Invoice::STATUS_DELETED) {
+            $invoice_query = Invoice::withTrashed()->whereCompany();
+        } else {
+            $invoice_query = Invoice::whereCompany();
+        }
+        $invoices = $invoice_query//Invoice::withTrashed()->whereCompany()
             ->join('customers', 'customers.id', '=', 'invoices.customer_id')
             ->applyFilters($request->all())
             ->select('invoices.*', 'customers.name')
