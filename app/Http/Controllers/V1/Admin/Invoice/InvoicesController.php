@@ -56,6 +56,7 @@ class InvoicesController extends Controller
             $invoice->send($request->subject, $request->body);
         }
 
+
         GenerateInvoicePdfJob::dispatch($invoice);
 
         return new InvoiceResource($invoice);

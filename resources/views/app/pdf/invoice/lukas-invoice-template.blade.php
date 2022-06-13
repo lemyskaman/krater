@@ -126,7 +126,7 @@
         /* -- Billing -- */
 
         .billing-address-container {
-            padding-top: 50px;
+            padding-top: 0px;
             float: left;
             padding-left: 30px;
         }
@@ -151,9 +151,9 @@
             font-size: 12px;
             line-height: 15px;
             color: #595959;
-            padding: 45px 0px 0px 30px;
+            padding: 10px 0px 0px 30px;
             margin: 0px;
-            width: 160px;
+            width: 100%;
             word-wrap: break-word;
         }
 
@@ -334,25 +334,32 @@
         <table width="100%">
             <tr>
                 <td class="text-center">
-                    @if ($logo)
-                        <img class="header-logo" style="height:50px" src="{{ $logo }}" alt="Company Logo">
-                    @else
-                        @if ($invoice->customer->company)
-                            <h2 class="header-logo"> {{ $invoice->customer->company->name }}</h2>
-                        @endif
-                    @endif
+
                 </td>
             </tr>
         </table>
-        <hr class="header-bottom-divider" style="border: 0.620315px solid #E8E8E8;" />
+
     </div>
 
 
     <div class="content-wrapper">
-        <div style="padding-top: 30px">
+        <div style="padding-top: 50px">
             <div class="company-address-container company-address">
-                emite:
-                {!! $company_address !!}
+                 <table>
+                    <tr>
+                        <td class="attribute-label">Cliente:</td>
+                        <td class="attribute-value"> &nbsp;{{ $invoice->customer->name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="attribute-label">Rif:</td>
+                        <td class="attribute-value"> &nbsp;{{ $invoice->customer->rif }}</td>
+                    </tr>
+                    <tr>
+                        <td class="attribute-label">Telefono:</td>
+                        <td class="attribute-value"> &nbsp;{{ $invoice->customer->phone  }}</td>
+                    </tr>
+
+                </table>
             </div>
 
             <div class="invoice-details-container">
@@ -366,20 +373,17 @@
                         <td class="attribute-value"> &nbsp;{{ $invoice->formattedInvoiceDate }}</td>
                     </tr>
                     <tr>
-                        <td class="attribute-label">@lang('pdf_invoice_due_date')</td>
-                        <td class="attribute-value"> &nbsp;{{ $invoice->formattedDueDate }}</td>
+                         <td class="attribute-label">Vendedor:</td>
+                        <td class="attribute-value"> &nbsp;<b>{{ $invoice->creator->name  }}</b> codigo: {{ $invoice->creator->id  }}</td>
                     </tr>
                 </table>
             </div>
 
             <div style="clear: both;"></div>
         </div>
-        client area
         <div class="billing-address-container billing-address">
-            {!!  $invoice->customer->name !!}
             @if ($billing_address)
-                <b>@lang('pdf_bill_to')</b> <br>
-
+                <b>Dirección:</b>
                 {!! $billing_address !!}
             @endif
         </div>
@@ -394,7 +398,7 @@
         </div>
 
         <div style="position: relative; clear: both;">
-            @include('app.pdf.invoice.partials.table')
+            @include('app.pdf.invoice.partials.lukas-table')
         </div>
 
         <div class="notes">
