@@ -67,7 +67,25 @@
                 type="text"
               />
             </BaseInputGroup>
-
+           <BaseInputGroup
+              :label="$t('customers.rif')"
+              required
+              :error="
+                v$.currentCustomer.rif.$error &&
+                v$.currentCustomer.rif.$errors[0].$message
+              "
+              :content-loading="isFetchingInitialData"
+            >
+              <BaseInput
+                v-model="customerStore.currentCustomer.rif"
+                :content-loading="isFetchingInitialData"
+                type="text"
+                name="rif"
+                class=""
+                :invalid="v$.currentCustomer.rif.$error"
+                @input="v$.currentCustomer.rif.$touch()"
+              />
+            </BaseInputGroup>
             <BaseInputGroup
               :error="
                 v$.currentCustomer.email.$error &&
@@ -637,6 +655,13 @@ const rules = computed(() => {
         minLength: helpers.withMessage(
           t('validation.name_min_length', { count: 3 }),
           minLength(3)
+        ),
+      },
+      rif: {
+        required: helpers.withMessage(t('validation.required'), required),
+        minLength: helpers.withMessage(
+          t('validation.name_min_length', { count: 9 }),
+          minLength(9)
         ),
       },
       prefix: {

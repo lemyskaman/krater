@@ -2,6 +2,7 @@
   "navigation": {
     "dashboard": "Tablero",
     "customers": "Clientes",
+    "exchange-rate": "Tasa de Cambio",
     "items": "Artículos",
     "invoices": "Facturas",
     "recurring-invoices": "Facturas recurrentes",
@@ -62,6 +63,7 @@
     "ship_to": "Enviar a",
     "due": "Debido",
     "draft": "Borrador",
+    "deleted": "Eliminado",
     "sent": "Enviado",
     "all": "Todas",
     "select_all": "Seleccionar todo",
@@ -233,7 +235,8 @@
     "updated_message": "Cliente actualizado con éxito",
     "address_updated_message": "Información del domicilio actualizado correctamente",
     "deleted_message": "Cliente eliminado correctamente | Clientes eliminados exitosamente",
-    "edit_currency_not_allowed": "No se puede cambiar la divisa una vez creadas las transacciones."
+    "edit_currency_not_allowed": "No se puede cambiar la divisa una vez creadas las transacciones.",
+    "rif": "Rif"
   },
   "items": {
     "title": "Artículos",
@@ -369,12 +372,13 @@
     "all": "Todas",
     "paid": "Pagada",
     "unpaid": "No pagado",
+    "deleted": "Eliminada",
     "viewed": "Visto",
     "overdue": "Vencido",
     "completed": "Completado",
     "customer": "CLIENTE",
     "paid_status": "ESTADO PAGADO",
-    "ref_no": "NÚMERO DE REFERENCIA.",
+    "ref_no": "NÚMER O DE REFERENCIA.",
     "number": "NÚMERO",
     "amount_due": "IMPORTE PENDIENTE",
     "partially_paid": "Parcialmente pagado",
@@ -1480,7 +1484,8 @@
     "api_error": "El servidor no responde.",
     "feature_not_enabled": "Característica no habilitada.",
     "request_limit_met": "Ha alcanzado el límite de solicitudes.",
-    "address_incomplete": "Dirección incompleta"
+    "address_incomplete": "Dirección incompleta",
+    "complete_and_paid_invoice_can_not_be_edited": "No se pueden editar facturas totalmente pagadas"
   },
   "pdf_estimate_label": "Presupuestar",
   "pdf_estimate_number": "Número de Presupuesto",

@@ -177,6 +177,7 @@ class Customer extends Authenticatable implements HasMedia
 
     public static function createCustomer($request)
     {
+
         $customer = Customer::create($request->getCustomerPayload());
 
         if ($request->shipping) {

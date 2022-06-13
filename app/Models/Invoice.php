@@ -11,6 +11,7 @@ use Crater\Traits\GeneratesPdfTrait;
 use Crater\Traits\HasCustomFieldsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
@@ -24,11 +25,13 @@ class Invoice extends Model implements HasMedia
     use InteractsWithMedia;
     use GeneratesPdfTrait;
     use HasCustomFieldsTrait;
+    use SoftDeletes;
 
     public const STATUS_DRAFT = 'DRAFT';
     public const STATUS_SENT = 'SENT';
     public const STATUS_VIEWED = 'VIEWED';
     public const STATUS_COMPLETED = 'COMPLETED';
+    public const STATUS_DELETED = 'DELETED';
 
     public const STATUS_UNPAID = 'UNPAID';
     public const STATUS_PARTIALLY_PAID = 'PARTIALLY_PAID';
@@ -365,6 +368,12 @@ class Invoice extends Model implements HasMedia
 
     public function updateInvoice($request)
     {
+        $deleted_column = $this->getDeletedAtColumn();
+        if ( ! empty($this->$deleted_column )){
+            $this->changeInvoiceStatus(0);
+            return 'can_not_update_deleted_invoice';
+
+        }
         $serial = (new SerialNumberFormatter())
             ->setModel($this)
             ->setCompany($this->company_id)
@@ -377,6 +386,11 @@ class Invoice extends Model implements HasMedia
 
         $total_paid_amount = $this->total - $this->due_amount;
 
+        $deleted_column = $this->getDeletedAtColumn();
+
+        if ($this->status===self::STATUS_COMPLETED && $this->paid_status===self::STATUS_PAID ) {
+            return 'complete_and_paid_invoice_can_not_be_edited';
+        }
         if ($total_paid_amount > 0 && $this->customer_id !== $request->customer_id) {
             return 'customer_cannot_be_changed_after_payment_is_added';
         }
@@ -396,7 +410,8 @@ class Invoice extends Model implements HasMedia
         $data['customer_sequence_number'] = $serial->nextCustomerSequenceNumber;
 
         $this->changeInvoiceStatus($data['due_amount']);
-
+        $data['status']=$this->status;
+        $data['paid_status'] = $this->paid_status;
         $this->update($data);
 
         $company_currency = CompanySetting::getSetting('currency', $request->header('company'));
@@ -687,6 +702,13 @@ class Invoice extends Model implements HasMedia
 
     public function changeInvoiceStatus($amount)
     {
+        $deleted_column = $this->getDeletedAtColumn();
+        if ( $this->$deleted_column ){
+            $this->status = self::STATUS_DELETED;
+            return $this->save();
+
+        }
+
         if ($amount < 0) {
             return [
                 'error' => 'invalid_amount',
@@ -718,6 +740,7 @@ class Invoice extends Model implements HasMedia
             }
 
             $invoice->delete();
+            $invoice->changeInvoiceStatus(0);
         }
 
         return true;
