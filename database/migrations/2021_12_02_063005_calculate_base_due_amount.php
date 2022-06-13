@@ -12,7 +12,7 @@ class CalculateBaseDueAmount extends Migration
      */
     public function up()
     {
-        $invoices = Invoice::withTrashed(false)->all();
+        $invoices = Invoice::all();
 
         foreach ($invoices as $invoice) {
             if ($invoice->exchange_rate) {
