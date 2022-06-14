@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>@lang('pdf_invoice_label') - {{ $estimate->invoice_number }}</title>
+    <title>@lang('pdf_estimate_label') - {{ $estimate->estimate_number }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <style type="text/css">
@@ -17,8 +17,8 @@
             margin-top: 50px;
         }
 
-        .text-center {
-            text-align: center;
+        table {
+            border-collapse: collapse;
         }
 
         hr {
@@ -29,14 +29,6 @@
 
         /* -- Header -- */
 
-        .header-bottom-divider {
-            color: rgba(0, 0, 0, 0.2);
-            top: 90px;
-            left: 0px;
-            width: 100%;
-            margin-left: 0%;
-        }
-
         .header-container {
             position: absolute;
             width: 100%;
@@ -45,25 +37,53 @@
             top: -50px;
         }
 
+        .header-bottom-divider {
+            color: rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 90px;
+            left: 0px;
+            width: 100%;
+        }
+
         .header-logo {
+
             margin-top: 20px;
-            padding-bottom: 20px;
             text-transform: capitalize;
             color: #817AE3;
         }
 
-        .content-wrapper {
+        .header {
+            font-size: 20px;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .wrapper {
             display: block;
             margin-top: 0px;
             padding-top: 16px;
             padding-bottom: 20px;
         }
 
+        /* -- Company Details -- */
+
+        .company-details-container {
+            padding-top: 30px;
+        }
+
         .company-address-container {
             padding-top: 15px;
+            float: left;
+            padding-left: 30px;
+            width: 30%;
+            text-transform: capitalize;
+            margin-bottom: 2px;
+        }
+
+        .company-address-container {
             padding-left: 30px;
             float: left;
             width: 30%;
+            text-transform: capitalize;
             margin-bottom: 2px;
         }
 
@@ -76,7 +96,7 @@
         }
 
         .company-address {
-            margin-top: 16px;
+            margin-top: 2px;
             text-align: left;
             font-size: 12px;
             line-height: 15px;
@@ -85,10 +105,9 @@
             word-wrap: break-word;
         }
 
-        .invoice-details-container {
+        .estimate-details-container {
             float: right;
             padding: 10px 30px 0 0;
-            margin-top: 18px;
         }
 
         .attribute-label {
@@ -96,7 +115,7 @@
             line-height: 18px;
             padding-right: 40px;
             text-align: left;
-            color: #55547A;
+            color: #55547A
         }
 
         .attribute-value {
@@ -105,21 +124,50 @@
             text-align: right;
         }
 
+        /* -- Customer Address -- */
+
+        .customer-address-container {
+            width: 45%;
+            padding: 0px 0 0 0px;
+        }
+
         /* -- Shipping -- */
 
         .shipping-address-container {
             float: right;
             padding-left: 40px;
-            width: 160px;
+            width: 100%;
+        }
+
+        .shipping-address-container--left {
+            float: left;
+            padding-left: 0px;
+        }
+
+        .shipping-address-label {
+            font-size: 12px;
+            line-height: 18px;
+            padding: 0px;
+            margin-top: 27px;
+            margin-bottom: 0px;
+        }
+
+        .shipping-address-name {
+            max-width: 160px;
+            font-size: 15px;
+            line-height: 22px;
+            padding: 0px;
+            margin: 0px;
         }
 
         .shipping-address {
             font-size: 12px;
             line-height: 15px;
             color: #595959;
-            padding: 45px 0px 0px 40px;
+            padding-top: 45px;
+            padding-left: 40px;
             margin: 0px;
-            width: 160px;
+            width: 100%;
             word-wrap: break-word;
         }
 
@@ -141,10 +189,11 @@
 
         .billing-address-name {
             max-width: 160px;
-            font-size: 15px;
+            font-size: 10px;
             line-height: 22px;
             padding: 0px;
             margin: 0px;
+
         }
 
         .billing-address {
@@ -175,13 +224,17 @@
             text-align: center;
             color: rgba(0, 0, 0, 0.85);
             padding: 5px;
-            color: #55547A;
+            padding-bottom: 10px;
         }
 
         tr.item-table-heading-row th {
             border-bottom: 0.620315px solid #E8E8E8;
             font-size: 12px;
             line-height: 18px;
+        }
+
+        .item-table-heading-row {
+            margin-bottom: 10px;
         }
 
         tr.item-row td {
@@ -191,10 +244,11 @@
 
         .item-cell {
             font-size: 13;
+            color: #040405;
             text-align: center;
             padding: 5px;
             padding-top: 10px;
-            color: #040405;
+            border-color: #d9d9d9;
         }
 
         .item-description {
@@ -207,20 +261,23 @@
 
         .total-display-container {
             padding: 0 25px;
+
         }
 
         .total-display-table {
             border-top: none;
+            box-sizing: border-box;
             page-break-inside: avoid;
             page-break-before: auto;
             page-break-after: auto;
             margin-top: 20px;
             float: right;
             width: auto;
+
         }
 
         .total-table-attribute-label {
-            font-size: 13px;
+            font-size: 12px;
             color: #55547A;
             text-align: left;
             padding-left: 10px;
@@ -229,8 +286,17 @@
         .total-table-attribute-value {
             font-weight: bold;
             text-align: right;
-            font-size: 13px;
+            font-size: 12px;
             color: #040405;
+            padding-right: 10px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .total-table-attribute-value2 {
+            font-weight: bold;
+            text-align: right;
+            font-size: 14px;
+            color: #000000;
             padding-right: 10px;
             padding-top: 2px;
             padding-bottom: 2px;
@@ -255,7 +321,7 @@
         .notes {
             font-size: 12px;
             color: #595959;
-            margin-top: 15px;
+            margin-top: 80px;
             margin-left: 30px;
             width: 442px;
             text-align: left;
@@ -279,6 +345,9 @@
             color: #5851DB;
         }
 
+        .text-center {
+            text-align: center
+        }
 
         table .text-left {
             text-align: left;
@@ -333,23 +402,32 @@
     <div class="header-container">
         <table width="100%">
             <tr>
-                <td class="text-center">
+                <td class="text-left " style="padding-left: 40px">
                     @if ($logo)
                         <img class="header-logo" style="height: 50px;" src="{{ $logo }}" alt="Company Logo">
+
                     @else
                         @if ($estimate->customer->company)
                             <h2 class="header-logo"> {{ $estimate->customer->company->name }} </h2>
                         @endif
                     @endif
+                    <div style="lline-height: 80%; font-size: 10px;text-right">
+                            {{$estimate->customer->company->name }} Rif: J-500909990-0 - Telefono: {{$estimate->customer->company->address->phone }}
+                    </div>
                 </td>
+
+                <td class="text-left" style="color: #9ba2ab">
+                    <h3>Presupuesto</h3>
+
+                </td>
+
             </tr>
         </table>
         <hr class="header-bottom-divider" />
     </div>
 
-
-    <div class="content-wrapper">
-        <div style="padding-top: 50px">
+    <div class="wrapper">
+        <div class="company-details-container">
             <div class="company-address-container company-address">
                  <table>
                     <tr>
@@ -368,25 +446,25 @@
                 </table>
             </div>
 
-            <div class="invoice-details-container">
-                <table>
+            <div class="estimate-details-container">
+                <table class="estimate-details-table">
                     <tr>
-                        <td class="attribute-label">@lang('pdf_invoice_number')</td>
-                        <td class="attribute-value"> &nbsp;{{ $estimate->invoice_number }}</td>
+                        <td class="attribute-label">@lang('pdf_estimate_number')</td>
+                        <td class="attribute-value"> &nbsp;{{ $estimate->estimate_number }}</td>
                     </tr>
                     <tr>
-                        <td class="attribute-label">@lang('pdf_invoice_date')</td>
-                        <td class="attribute-value"> &nbsp;{{ $estimate->formattedInvoiceDate }}</td>
+                        <td class="attribute-label">@lang('pdf_estimate_date')</td>
+                        <td class="attribute-value"> &nbsp;{{ $estimate->formattedEstimateDate }}</td>
                     </tr>
                     <tr>
-                         <td class="attribute-label">Vendedor:</td>
+                        <td class="attribute-label">Creado por:</td>
                         <td class="attribute-value"> &nbsp;<b>{{ $estimate->creator->name  }}</b> codigo: {{ $estimate->creator->id  }}</td>
-                    </tr>
+                   </tr>
                 </table>
             </div>
-
             <div style="clear: both;"></div>
         </div>
+
         <div class="billing-address-container billing-address">
             @if ($billing_address)
                 <b>Dirección:</b>
@@ -394,17 +472,11 @@
             @endif
         </div>
 
-        <div class="shipping-address-container shipping-address" @if ($billing_address !== '</br>') style="float:left;" @else style="display:block; float:left: padding-left: 0px;" @endif>
-
-            @if ($shipping_address)
-                <b> @lang('pdf_ship_to') </b> <br>
-
-                {!! $shipping_address !!}
-            @endif
+            <div style="clear: both;"></div>
         </div>
 
-        <div style="position: relative; clear: both;">
-            @include('app.pdf.invoice.partials.lukas-table')
+        <div style="position:relative">
+            @include('app.pdf.estimate.partials.table')
         </div>
 
         <div class="notes">

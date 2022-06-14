@@ -10,7 +10,7 @@
         @if($estimate->discount_per_item === 'YES')
         <th class="pl-10 text-right item-table-heading">@lang('pdf_discount_label')</th>
         @endif
-        <th class="text-right item-table-heading">@lang('pdf_amount_label')</th>
+        <th class="text-right item-table-heading">Total</th>
     </tr>
     @php
         $index = 1
@@ -101,7 +101,7 @@
                 </tr>
             @endif
         @endif
-        
+
         @if ($estimate->tax_per_item === 'YES')
             @foreach ($taxes as $tax)
                 <tr>
@@ -125,15 +125,15 @@
                 </tr>
             @endforeach
         @endif
-        
+
         <tr>
             <td class="py-3"></td>
             <td class="py-3"></td>
         </tr>
         <tr>
             <td class="border-0 total-border-left total-table-attribute-label">@lang('pdf_total')</td>
-            <td class="py-8 border-0 total-border-right item-cell total-table-attribute-value" style="color: #5851D8">
-                {!! format_money_pdf($estimate->total, $estimate->customer->currency)!!}
+            <td class="py-8 border-0 total-border-right item-cell total-table-attribute-value2" style="color: #000000">
+                <b>{!! format_money_pdf($estimate->total, $estimate->customer->currency)!!}</b>
             </td>
         </tr>
     </table>

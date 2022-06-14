@@ -141,10 +141,11 @@
 
         .billing-address-name {
             max-width: 160px;
-            font-size: 15px;
+            font-size: 10px;
             line-height: 22px;
             padding: 0px;
             margin: 0px;
+
         }
 
         .billing-address {
@@ -229,7 +230,16 @@
         .total-table-attribute-value {
             font-weight: bold;
             text-align: right;
-            font-size: 13px;
+            font-size: 12px;
+            color: #040405;
+            padding-right: 10px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .total-table-attribute-value2 {
+            font-weight: bold;
+            text-align: right;
+            font-size: 14px;
             color: #040405;
             padding-right: 10px;
             padding-top: 2px;
@@ -373,7 +383,7 @@
                         <td class="attribute-value"> &nbsp;{{ $invoice->formattedInvoiceDate }}</td>
                     </tr>
                     <tr>
-                         <td class="attribute-label">Vendedor:</td>
+                         <td class="attribute-label">Usuario:</td>
                         <td class="attribute-value"> &nbsp;<b>{{ $invoice->creator->name  }}</b> codigo: {{ $invoice->creator->id  }}</td>
                     </tr>
                 </table>
