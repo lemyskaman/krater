@@ -34,6 +34,21 @@
                   @input="v$.name.$touch()"
                 />
               </BaseInputGroup>
+              <BaseInputGroup
+                :label="$t('customers.rif')"
+                required
+                :error="v$.name.$error && v$.name.$errors[0].$message"
+              >
+                <BaseInput
+                  v-model.trim="customerStore.currentCustomer.rif"
+                  type="text"
+                  name="name"
+                  class="mt-1 md:mt-0"
+                  :invalid="v$.name.$error"
+                  @input="v$.name.$touch()"
+                />
+              </BaseInputGroup>
+
 
               <BaseInputGroup
                 :label="$tc('settings.currencies.currency')"
@@ -511,6 +526,13 @@ const rules = computed(() => {
         minLength(3)
       ),
     },
+    rif: {
+      required: helpers.withMessage(t('validation.required'), required),
+      minLength: helpers.withMessage(
+        t('validation.name_min_length', { count: 9 }),
+        minLength(9)
+      ),
+    },
     currency_id: {
       required: helpers.withMessage(t('validation.required'), required),
     },
@@ -605,12 +627,13 @@ async function setInitialData() {
 async function submitCustomerData() {
   v$.value.$touch()
 
+  /*
   if (v$.value.$invalid && customerStore.currentCustomer.email === '') {
     notificationStore.showNotification({
       type: 'error',
       message: t('settings.notification.please_enter_email'),
     })
-  }
+  }*/
 
   if (v$.value.$invalid) {
     return true
