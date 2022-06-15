@@ -219,6 +219,15 @@
             float: right;
             width: auto;
         }
+                .total-display-table-ves {
+            border-top: none;
+            page-break-inside: avoid;
+            page-break-before: auto;
+            page-break-after: auto;
+            margin-top: 10px;
+            float: left;
+            width: auto;
+        }
 
         .total-table-attribute-label {
             font-size: 13px;
@@ -398,19 +407,14 @@
             @endif
         </div>
 
-        <div class="shipping-address-container shipping-address" @if ($billing_address !== '</br>') style="float:left;" @else style="display:block; float:left: padding-left: 0px;" @endif>
 
-            @if ($shipping_address)
-                <b> @lang('pdf_ship_to') </b> <br>
-
-                {!! $shipping_address !!}
-            @endif
-        </div>
 
         <div style="position: relative; clear: both;">
             @include('app.pdf.invoice.partials.lukas-table')
         </div>
+        <div class="notes">
 
+        </div>
         <div class="notes">
             @if ($notes)
                 <div class="notes-label">

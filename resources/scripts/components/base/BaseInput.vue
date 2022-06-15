@@ -90,6 +90,7 @@
     <input
       v-bind="$attrs"
       :type="type"
+      :step="step"
       :value="modelValue"
       :disabled="disabled"
       :class="[
@@ -157,8 +158,12 @@ const props = defineProps({
     default: false,
   },
   type: {
-    type: [Number, String],
+    type: [Number, String, 'Decimal'],
     default: 'text',
+  },
+  step:{
+    type: Number,
+    defaul:1
   },
   modelValue: {
     type: [String, Number],

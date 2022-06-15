@@ -242,6 +242,8 @@ const dataTypes = reactive([
   { label: 'Phone', value: 'Phone' },
   { label: 'URL', value: 'Url' },
   { label: 'Number', value: 'Number' },
+  { label: 'Decimal Number (hundredths order) ', value: 'Decimal' },
+  { label: 'Money', value: 'Money' },
   { label: 'Select Field', value: 'Dropdown' },
   { label: 'Switch Toggle', value: 'Switch' },
   { label: 'Date', value: 'Date' },

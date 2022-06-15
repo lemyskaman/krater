@@ -88,76 +88,162 @@
 </table>
 
 <hr class="item-cell-table-hr">
-
 <div class="total-display-container">
-    <table width="100%" cellspacing="0px" border="0" class="total-display-table @if(count($invoice->items) > 12) page-break @endif">
+    <table>
         <tr>
-            <td class="border-0 total-table-attribute-label">@lang('pdf_subtotal')</td>
-            <td class="py-2 border-0 item-cell total-table-attribute-value">
-                {!! format_money_pdf($invoice->sub_total, $invoice->customer->currency) !!}
+            <td width="600px">
+
+                <div style="font-size: 10px"> Operaciones en moneda extranjeras -Monto equivalente en Bolívares: </div>
+                 <table width="100%" cellspacing="0px" border="0"
+                       class="total-display-table-ves @if(count($invoice->items) > 12) page-break @endif">
+
+                     <tr>
+                        <td class="border-0 total-table-attribute-label">@lang('pdf_subtotal')</td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value">
+                            {{$invoice->sub_total}}
+                        </td>
+                    </tr>
+
+                    @if($invoice->discount > 0)
+                        @if ($invoice->discount_per_item === 'NO')
+                            <tr>
+                                <td class="border-0 total-table-attribute-label">
+                                    @if($invoice->discount_type === 'fixed')
+                                        @lang('pdf_discount_label')
+                                    @endif
+                                    @if($invoice->discount_type === 'percentage')
+                                        @lang('pdf_discount_label') ({{$invoice->discount}}%)
+                                    @endif
+                                </td>
+                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                    @if($invoice->discount_type === 'fixed')
+                                        {!! $invoice->discount_val !!}
+                                    @endif
+                                    @if($invoice->discount_type === 'percentage')
+                                        {!! $invoice->discount_val !!}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
+                    @endif
+
+                    @if ($invoice->tax_per_item === 'YES')
+                        @foreach ($taxes as $tax)
+                            <tr>
+                                <td class="border-0 total-table-attribute-label">
+                                    {{$tax->name.' ('.$tax->percent.'%)'}}
+                                </td>
+                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                    {!! $tax->amount !!}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        @foreach ($invoice->taxes as $tax)
+                            <tr>
+                                <td class="border-0 total-table-attribute-label">
+                                    {{$tax->name.' ('.$tax->percent.'%)'}}
+                                </td>
+                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                    {!! $tax->amount!!}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+
+                    <tr>
+                        <td class="py-3"></td>
+                        <td class="py-3"></td>
+                    </tr>
+                    <tr>
+                        <td class="border-0 total-border-left total-table-attribute-label">
+                            @lang('pdf_total')
+                        </td>
+                        <td
+                            class="py-8 border-0 total-border-right item-cell total-table-attribute-value"
+                            style="color: #5851D8"
+                        >
+                            {!! format_money_pdf($invoice->total,)!!}
+                        </td>
+                    </tr>
+                </table>
             </td>
-        </tr>
 
-        @if($invoice->discount > 0)
-            @if ($invoice->discount_per_item === 'NO')
-                <tr>
-                    <td class="border-0 total-table-attribute-label">
-                        @if($invoice->discount_type === 'fixed')
-                            @lang('pdf_discount_label')
-                        @endif
-                        @if($invoice->discount_type === 'percentage')
-                            @lang('pdf_discount_label') ({{$invoice->discount}}%)
-                        @endif
-                    </td>
-                    <td class="py-2 border-0 item-cell total-table-attribute-value" >
-                        @if($invoice->discount_type === 'fixed')
-                            {!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}
-                        @endif
-                        @if($invoice->discount_type === 'percentage')
-                            {!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}
-                        @endif
-                    </td>
-                </tr>
-            @endif
-        @endif
+            <!-- TOTALES MONEDA DE EMPRESA -->
 
-        @if ($invoice->tax_per_item === 'YES')
-            @foreach ($taxes as $tax)
-                <tr>
-                    <td class="border-0 total-table-attribute-label">
-                        {{$tax->name.' ('.$tax->percent.'%)'}}
-                    </td>
-                    <td class="py-2 border-0 item-cell total-table-attribute-value">
-                        {!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}
-                    </td>
-                </tr>
-            @endforeach
-        @else
-            @foreach ($invoice->taxes as $tax)
-                <tr>
-                    <td class="border-0 total-table-attribute-label">
-                        {{$tax->name.' ('.$tax->percent.'%)'}}
-                    </td>
-                    <td class="py-2 border-0 item-cell total-table-attribute-value">
-                        {!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}
-                    </td>
-                </tr>
-            @endforeach
-        @endif
+            <td>
+                <table width="100%" cellspacing="0px" border="0"
+                       class="total-display-table @if(count($invoice->items) > 12) page-break @endif">
+                    <tr>
+                        <td class="border-0 total-table-attribute-label">@lang('pdf_subtotal')</td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value">
+                            {!! format_money_pdf($invoice->sub_total, $invoice->customer->currency) !!}
+                        </td>
+                    </tr>
 
-        <tr>
-            <td class="py-3"></td>
-            <td class="py-3"></td>
-        </tr>
-        <tr>
-            <td class="border-0 total-border-left total-table-attribute-label">
-                @lang('pdf_total')
-            </td>
-            <td
-                class="py-8 border-0 total-border-right item-cell total-table-attribute-value"
-                style="color: #5851D8"
-            >
-                {!! format_money_pdf($invoice->total, $invoice->customer->currency)!!}
+                    @if($invoice->discount > 0)
+                        @if ($invoice->discount_per_item === 'NO')
+                            <tr>
+                                <td class="border-0 total-table-attribute-label">
+                                    @if($invoice->discount_type === 'fixed')
+                                        @lang('pdf_discount_label')
+                                    @endif
+                                    @if($invoice->discount_type === 'percentage')
+                                        @lang('pdf_discount_label') ({{$invoice->discount}}%)
+                                    @endif
+                                </td>
+                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                    @if($invoice->discount_type === 'fixed')
+                                        {!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}
+                                    @endif
+                                    @if($invoice->discount_type === 'percentage')
+                                        {!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
+                    @endif
+
+                    @if ($invoice->tax_per_item === 'YES')
+                        @foreach ($taxes as $tax)
+                            <tr>
+                                <td class="border-0 total-table-attribute-label">
+                                    {{$tax->name.' ('.$tax->percent.'%)'}}
+                                </td>
+                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                    {!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        @foreach ($invoice->taxes as $tax)
+                            <tr>
+                                <td class="border-0 total-table-attribute-label">
+                                    {{$tax->name.' ('.$tax->percent.'%)'}}
+                                </td>
+                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                    {!! format_money_pdf($tax->amount, $invoice->customer->currency) !!}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+
+                    <tr>
+                        <td class="py-3"></td>
+                        <td class="py-3"></td>
+                    </tr>
+                    <tr>
+                        <td class="border-0 total-border-left total-table-attribute-label">
+                            @lang('pdf_total')
+                        </td>
+                        <td
+                            class="py-8 border-0 total-border-right item-cell total-table-attribute-value"
+                            style="color: #5851D8"
+                        >
+                            {!! format_money_pdf($invoice->total, $invoice->customer->currency)!!}
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>

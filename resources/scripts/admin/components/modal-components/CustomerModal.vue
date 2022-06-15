@@ -626,7 +626,7 @@ async function setInitialData() {
 
 async function submitCustomerData() {
   v$.value.$touch()
-
+  console.log('submit customer form')
   /*
   if (v$.value.$invalid && customerStore.currentCustomer.email === '') {
     notificationStore.showNotification({

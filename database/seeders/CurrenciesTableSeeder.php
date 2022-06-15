@@ -16,6 +16,14 @@ class CurrenciesTableSeeder extends Seeder
     {
         $currencies = [
             [
+                'name' => 'Bolívar',
+                'code' => 'VES',
+                'symbol' => 'Bs',
+                'precision' => '2',
+                'thousand_separator' => ',',
+                'decimal_separator' => '.',
+            ],
+            [
                 'name' => 'US Dollar',
                 'code' => 'USD',
                 'symbol' => '$',
