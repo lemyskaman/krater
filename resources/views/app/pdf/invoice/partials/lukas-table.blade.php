@@ -89,18 +89,20 @@
 
 <hr class="item-cell-table-hr">
 <div class="total-display-container">
-    <table>
-        <tr>
-            <td width="600px">
+    <table style="width: 100%;text-align: right">
+        <tr  >
+            <td style="text-align: left">
 
-                <div style="font-size: 10px"> Operaciones en moneda extranjeras -Monto equivalente en Bolívares: </div>
+                <div style="font-size: 10px"> Operaciones en moneda extranjeras -Monto equivalente en Bolívares:<br>
+                Tasa de cambio a la factura Bs. <b>{{number_format($bcv_rate,2)}}</b> /  1 US $
+                </div>
                  <table width="100%" cellspacing="0px" border="0"
                        class="total-display-table-ves @if(count($invoice->items) > 12) page-break @endif">
 
                      <tr>
                         <td class="border-0 total-table-attribute-label">@lang('pdf_subtotal')</td>
-                        <td class="py-2 border-0 item-cell total-table-attribute-value">
-                            {{$invoice->sub_total}}
+                        <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                            Bs. {{number_format(($invoice->sub_total/100)*$bcv_rate,2) }}
                         </td>
                     </tr>
 
@@ -115,12 +117,12 @@
                                         @lang('pdf_discount_label') ({{$invoice->discount}}%)
                                     @endif
                                 </td>
-                                <td class="py-2 border-0 item-cell total-table-attribute-value">
+                                <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
                                     @if($invoice->discount_type === 'fixed')
-                                        {!! $invoice->discount_val !!}
+                                     Bs.  {!! number_format(($invoice->discount_val/100)*$bcv_rate,2)   !!}
                                     @endif
                                     @if($invoice->discount_type === 'percentage')
-                                        {!! $invoice->discount_val !!}
+                                       {{$item->discount}}%
                                     @endif
                                 </td>
                             </tr>
@@ -133,8 +135,8 @@
                                 <td class="border-0 total-table-attribute-label">
                                     {{$tax->name.' ('.$tax->percent.'%)'}}
                                 </td>
-                                <td class="py-2 border-0 item-cell total-table-attribute-value">
-                                    {!! $tax->amount !!}
+                                <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                                   Bs. {!! number_format(($tax->amount/100)*$bcv_rate,2)   !!}
                                 </td>
                             </tr>
                         @endforeach
@@ -144,8 +146,8 @@
                                 <td class="border-0 total-table-attribute-label">
                                     {{$tax->name.' ('.$tax->percent.'%)'}}
                                 </td>
-                                <td class="py-2 border-0 item-cell total-table-attribute-value">
-                                    {!! $tax->amount!!}
+                                <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                                    Bs. {!! number_format(($tax->amount/100)*$bcv_rate,2)  !!}
                                 </td>
                             </tr>
                         @endforeach
@@ -160,13 +162,13 @@
                             @lang('pdf_total')
                         </td>
                         <td
-                            class="py-8 border-0 total-border-right item-cell total-table-attribute-value"
-                            style="color: #5851D8"
+                            class="py-8 border-0 total-border-right item-cell total-table-attribute-value2-ves"
                         >
-                            {!! format_money_pdf($invoice->total,)!!}
+                            Bs. {!! number_format(($invoice->total/100)*$bcv_rate,2)       !!}
                         </td>
                     </tr>
                 </table>
+
             </td>
 
             <!-- TOTALES MONEDA DE EMPRESA -->
@@ -197,7 +199,7 @@
                                         {!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}
                                     @endif
                                     @if($invoice->discount_type === 'percentage')
-                                        {!! format_money_pdf($invoice->discount_val, $invoice->customer->currency) !!}
+                                        {{$item->discount}}%
                                     @endif
                                 </td>
                             </tr>
@@ -237,8 +239,8 @@
                             @lang('pdf_total')
                         </td>
                         <td
-                            class="py-8 border-0 total-border-right item-cell total-table-attribute-value"
-                            style="color: #5851D8"
+                            class="py-8 border-0 total-border-right item-cell total-table-attribute-value2"
+
                         >
                             {!! format_money_pdf($invoice->total, $invoice->customer->currency)!!}
                         </td>

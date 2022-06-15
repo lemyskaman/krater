@@ -579,12 +579,14 @@ class Invoice extends Model implements HasMedia
         $company = Company::find($this->company_id);
         $locale = CompanySetting::getSetting('language', $company->id);
         $customFields = CustomField::where('model_type', 'Item')->get();
-
         App::setLocale($locale);
 
         $logo = $company->logo_path;
-
+        $bcv_rate= CustomFieldValue::whereCustomFieldValuableId($this->id)->whereCustomFieldValuableType(Invoice::class)->with('customField')->first();
+        $bcv_rate_currency = Currency::whereCode('VES')->get();
         view()->share([
+            'bcv_rate_currency'=>$bcv_rate_currency,
+            'bcv_rate'=>$bcv_rate->string_answer,
             'invoice' => $this,
             'customFields' => $customFields,
             'company_address' => $this->getCompanyAddress(),
@@ -744,5 +746,10 @@ class Invoice extends Model implements HasMedia
         }
 
         return true;
+    }
+
+    public function customFieldValues()
+    {
+        return $this->morphMany(CustomFieldValue::class,'custom_field_valuable');
     }
 }

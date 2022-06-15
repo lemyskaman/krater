@@ -249,7 +249,16 @@
             font-weight: bold;
             text-align: right;
             font-size: 14px;
-            color: #040405;
+            color: #000000;
+            padding-right: 10px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .total-table-attribute-value2-ves {
+            font-weight: bold;
+            text-align: right;
+            font-size: 12px;
+            color: #4e555b;
             padding-right: 10px;
             padding-top: 2px;
             padding-bottom: 2px;
