@@ -219,7 +219,7 @@
             float: right;
             width: auto;
         }
-                .total-display-table-ves {
+        .total-display-table-ves {
             border-top: none;
             page-break-inside: avoid;
             page-break-before: auto;
@@ -228,6 +228,8 @@
             float: left;
             width: auto;
         }
+        
+
 
         .total-table-attribute-label {
             font-size: 13px;
@@ -285,7 +287,7 @@
             color: #595959;
             margin-top: 15px;
             margin-left: 30px;
-            width: 442px;
+            width: 700px;
             text-align: left;
             page-break-inside: avoid;
         }
@@ -424,6 +426,7 @@
         <div class="notes">
 
         </div>
+         <div style="clear: both;"></div>
         <div class="notes">
             @if ($notes)
                 <div class="notes-label">

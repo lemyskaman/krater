@@ -18,6 +18,22 @@
       <BaseCard class="w-full">
         <BaseInputGrid layout="one-column">
           <BaseInputGroup
+            :label="$t('items.id')"
+            :content-loading="isFetchingInitialData"
+            required
+            :error="
+              v$.currentItem.id.$error &&
+              v$.currentItem.id.$errors[0].$message
+            "
+          >
+            <BaseInput
+              v-model="itemStore.currentItem.name"
+              :content-loading="isFetchingInitialData"
+              :invalid="v$.currentItem.name.$error"
+              @input="v$.currentItem.name.$touch()"
+            />
+          </BaseInputGroup>
+          <BaseInputGroup
             :label="$t('items.name')"
             :content-loading="isFetchingInitialData"
             required
