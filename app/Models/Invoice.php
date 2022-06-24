@@ -583,11 +583,13 @@ class Invoice extends Model implements HasMedia
         App::setLocale($locale);
 
         $logo = $company->logo_path;
-        $bcv_rate= CustomFieldValue::whereCustomFieldValuableId($this->id)->whereCustomFieldValuableType(Invoice::class)->with('customField')->first();
+        $bcv_rate = $this->getCustomFieldValueBySlug('CUSTOM_INVOICE_BCV_RATE');
+        $payment_contidion= $this->getCustomFieldValueBySlug('CUSTOM_INVOICE_PAYMENT_CONDITION');
         $bcv_rate_currency = Currency::whereCode('VES')->get();
         view()->share([
             'bcv_rate_currency'=>$bcv_rate_currency,
-            'bcv_rate'=>$bcv_rate->string_answer,
+            'bcv_rate'=>(int) $bcv_rate,
+            'payment_condition'=>$payment_contidion,
             'invoice' => $this,
             'customFields' => $customFields,
             'company_address' => $this->getCompanyAddress(),

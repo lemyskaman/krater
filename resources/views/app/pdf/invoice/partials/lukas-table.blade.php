@@ -94,7 +94,7 @@
             <td style="text-align: left">
 
                 <div style="font-size: 10px"> Operaciones en moneda extranjeras -Monto equivalente en Bolívares:<br>
-                Tasa de cambio a la factura Bs. <b>{{number_format($bcv_rate,2)}}</b> /  1 US $
+                Tasa de cambio a la factura Bs. <b>{{number_format($bcv_rate||1,2)}}</b> /  1 US $
                 </div>
                  <table width="100%" cellspacing="0px" border="0"
                        class="total-display-table-ves @if(count($invoice->items) > 12) page-break @endif">

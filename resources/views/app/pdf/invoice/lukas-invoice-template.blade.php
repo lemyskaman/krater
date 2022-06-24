@@ -60,10 +60,11 @@
         }
 
         .company-address-container {
+            margin-top: 16px;
             padding-top: 15px;
             padding-left: 30px;
             float: left;
-            width: 30%;
+            width: 50%;
             margin-bottom: 2px;
         }
 
@@ -92,6 +93,7 @@
         }
 
         .attribute-label {
+            vertical-align: top;
             font-size: 12px;
             line-height: 18px;
             padding-right: 40px;
@@ -228,7 +230,7 @@
             float: left;
             width: auto;
         }
-        
+
 
 
         .total-table-attribute-label {
@@ -374,7 +376,7 @@
 
     <div class="content-wrapper">
         <div style="padding-top: 50px">
-            <div class="company-address-container company-address">
+            <div class="company-address-container">
                  <table>
                     <tr>
                         <td class="attribute-label">Cliente:</td>
@@ -388,6 +390,10 @@
                         <td class="attribute-label">Telefono:</td>
                         <td class="attribute-value"> &nbsp;{{ $invoice->customer->phone  }}</td>
                     </tr>
+                     <tr>
+                        <td class="attribute-label">Direccion:</td>
+                        <td class="attribute-value" > &nbsp;{!! $billing_address !!}</td>
+                    </tr>
 
                 </table>
             </div>
@@ -398,19 +404,32 @@
                         <td class="attribute-label">@lang('pdf_invoice_number')</td>
                         <td class="attribute-value"> &nbsp;{{ $invoice->invoice_number }}</td>
                     </tr>
-                    <tr>
-                        <td class="attribute-label">@lang('pdf_invoice_date')</td>
-                        <td class="attribute-value"> &nbsp;{{ $invoice->formattedInvoiceDate }}</td>
-                    </tr>
+
+                        <tr>
+                            <td class="attribute-label">@lang('pdf_invoice_date')</td>
+                            <td class="attribute-value"> &nbsp;{{ $invoice->formattedInvoiceDate }}</td>
+                        </tr>
+                            @if ($payment_condition=="Crédito")
+                        <tr>
+                            <td class="attribute-label">@lang('pdf_invoice_due_date')</td>
+                            <td class="attribute-value"> &nbsp;{{ $invoice->formattedDueDate }}</td>
+                        </tr>
+                            @endif
+
+                        <tr>
+                            <td class="attribute-label" >Condición de Pago:</td>
+                            <td class="attribute-value"> &nbsp;{{ $payment_condition }}</td>
+                        </tr>
                     <tr>
                          <td class="attribute-label">Usuario:</td>
-                        <td class="attribute-value"> &nbsp;<b>{{ $invoice->creator->name  }}</b> codigo: {{ $invoice->creator->id  }}</td>
+                        <td class="attribute-value"> &nbsp;<!--<b>{{ $invoice->creator->name  }}</b>--> codigo: {{ $invoice->creator->id  }}</td>
                     </tr>
                 </table>
             </div>
 
             <div style="clear: both;"></div>
         </div>
+        <!--
         <div class="billing-address-container billing-address">
             @if ($billing_address)
                 <b>Dirección:</b>
@@ -418,7 +437,7 @@
             @endif
         </div>
 
-
+-->
 
         <div style="position: relative; clear: both;">
             @include('app.pdf.invoice.partials.lukas-table')
