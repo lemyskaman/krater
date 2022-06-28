@@ -237,6 +237,7 @@ const modelTypes = reactive([
 ])
 
 const dataTypes = reactive([
+  { label: 'Hidden', value: 'Hidden' },
   { label: 'Text', value: 'Input' },
   { label: 'Textarea', value: 'TextArea' },
   { label: 'Phone', value: 'Phone' },
