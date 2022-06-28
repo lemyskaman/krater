@@ -371,7 +371,7 @@ class Invoice extends Model implements HasMedia
         $deleted_column = $this->getDeletedAtColumn();
         if ( ! empty($this->$deleted_column )){
             $this->changeInvoiceStatus(0);
-            return 'can_not_update_deleted_invoice';
+            //return 'can_not_update_deleted_invoice';
 
         }
         $serial = (new SerialNumberFormatter())

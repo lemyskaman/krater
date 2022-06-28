@@ -8,7 +8,7 @@
     <style type="text/css">
         /* -- Base -- */
         body {
-            font-family: "DejaVu Sans";
+            font-family: "monospace";
         }
 
         html {
@@ -174,7 +174,7 @@
         }
 
         .item-table-heading {
-            font-size: 13.5;
+            font-size: 11;
             text-align: center;
             color: rgba(0, 0, 0, 0.85);
             padding: 5px;
@@ -183,7 +183,7 @@
 
         tr.item-table-heading-row th {
             border-bottom: 0.620315px solid #E8E8E8;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 18px;
         }
 
@@ -193,10 +193,10 @@
         }
 
         .item-cell {
-            font-size: 13;
+            font-size: 11;
             text-align: center;
-            padding: 5px;
-            padding-top: 10px;
+            padding: 3px;
+            padding-top: 5px;
             color: #040405;
         }
 
@@ -234,7 +234,7 @@
 
 
         .total-table-attribute-label {
-            font-size: 13px;
+            font-size: 11px;
             color: #55547A;
             text-align: left;
             padding-left: 10px;
@@ -246,26 +246,26 @@
             font-size: 12px;
             color: #040405;
             padding-right: 10px;
-            padding-top: 2px;
-            padding-bottom: 2px;
+            padding-top: 1px;
+            padding-bottom: 1px;
         }
         .total-table-attribute-value2 {
             font-weight: bold;
             text-align: right;
-            font-size: 14px;
+            font-size: 12px;
             color: #000000;
             padding-right: 10px;
-            padding-top: 2px;
-            padding-bottom: 2px;
+            padding-top: 1px;
+            padding-bottom: 1px;
         }
         .total-table-attribute-value2-ves {
             font-weight: bold;
             text-align: right;
-            font-size: 12px;
+            font-size: 11px;
             color: #4e555b;
             padding-right: 10px;
-            padding-top: 2px;
-            padding-bottom: 2px;
+            padding-top: 1px;
+            padding-bottom: 1px;
         }
 
         .total-border-left {
@@ -285,7 +285,7 @@
         /* -- Notes -- */
 
         .notes {
-            font-size: 12px;
+            font-size: 10px;
             color: #595959;
             margin-top: 15px;
             margin-left: 30px;
@@ -295,7 +295,7 @@
         }
 
         .notes-label {
-            font-size: 15px;
+            font-size: 12px;
             line-height: 22px;
             letter-spacing: 0.05em;
             color: #040405;

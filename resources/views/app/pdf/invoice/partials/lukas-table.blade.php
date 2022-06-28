@@ -2,9 +2,6 @@
     <tr class="item-table-heading-row">
         <th width="2%" class="pr-20 text-right item-table-heading">#</th>
         <th width="40%" class="pl-0 text-left item-table-heading">@lang('pdf_items_label')</th>
-        @foreach($customFields as $field)
-            <th class="text-right item-table-heading">{{ $field->label }}</th>
-        @endforeach
         <th class="pr-20 text-right item-table-heading">@lang('pdf_quantity_label')</th>
         <th class="pr-20 text-right item-table-heading">@lang('pdf_price_label')</th>
         @if($invoice->discount_per_item === 'YES')
@@ -16,7 +13,9 @@
         <th class="text-right item-table-heading">Total</th>
     </tr>
     @php
-        $index = 1
+        $index = 1 ;
+        $taxless = 0;
+        $with_tax = 0;
     @endphp
     @foreach ($invoice->items as $item)
         <tr class="item-row">
@@ -39,7 +38,7 @@
                 </td>
             @endforeach
             <td
-                class="pr-20 text-right item-cell"
+                class="pr-20 text-center item-cell"
                 style="vertical-align: top;"
             >
                 {{$item->quantity}} @if($item->unit_name) {{$item->unit_name}} @endif
@@ -71,12 +70,19 @@
                     style="vertical-align: top;"
                 >
                     {!! format_money_pdf($item->tax, $invoice->customer->currency) !!}
+
                 </td>
             @endif
-
+            @php
+                if ($item->tax == 0){
+                    $taxless += $item->total ;
+                }else{
+                    $with_tax += $item->total;
+                }
+            @endphp
             <td
                 class="text-right item-cell"
-                style="vertical-align: top;"
+                style="vertical-align: top; width: "15%
             >
                 {!! format_money_pdf($item->total, $invoice->customer->currency) !!}
             </td>
@@ -105,7 +111,14 @@
                             Bs. {{number_format(($invoice->sub_total/100)*$bcv_rate,2) }}
                         </td>
                     </tr>
+                    <tr>
+                          <td class="border-0 total-table-attribute-label">
+                              Monto Exento:
+                          </td>
+                          <td class="py-2 border-0 item-cell total-table-attribute-value">
 
+                          </td>
+                    </tr>
                     @if($invoice->discount > 0)
                         @if ($invoice->discount_per_item === 'NO')
                             <tr>
@@ -139,6 +152,7 @@
                                    Bs. {!! number_format(($tax->amount/100)*$bcv_rate,2)   !!}
                                 </td>
                             </tr>
+
                         @endforeach
                     @else
                         @foreach ($invoice->taxes as $tax)
@@ -153,6 +167,7 @@
                         @endforeach
                     @endif
 
+
                     <tr>
                         <td class="py-3"></td>
                         <td class="py-3"></td>
@@ -164,7 +179,7 @@
                         <td
                             class="py-8 border-0 total-border-right item-cell total-table-attribute-value2-ves"
                         >
-                            Bs. {!! number_format(($invoice->total/100)*$bcv_rate,2)       !!}
+
                         </td>
                     </tr>
                 </table>
@@ -182,7 +197,22 @@
                             {!! format_money_pdf($invoice->sub_total, $invoice->customer->currency) !!}
                         </td>
                     </tr>
-
+                    <tr>
+                          <td class="border-0 total-table-attribute-label">
+                              Monto Exento:
+                          </td>
+                          <td class="py-2 border-0 item-cell total-table-attribute-value">
+                               {!!format_money_pdf($taxless,$invoice->customer->currency) !!}
+                          </td>
+                    </tr>
+                    <tr>
+                        <td class="border-0 total-table-attribute-label">
+                            Base Imponible:
+                        </td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value">
+                            {!! format_money_pdf($with_tax, $invoice->customer->currency)!!}
+                        </td>
+                    </tr>
                     @if($invoice->discount > 0)
                         @if ($invoice->discount_per_item === 'NO')
                             <tr>
@@ -229,14 +259,29 @@
                             </tr>
                         @endforeach
                     @endif
+                    <tr>
+                        <td class="border-0 total-table-attribute-label">
+                            Total Facturado:
+                        </td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value">
+                            {!! format_money_pdf($invoice->total, $invoice->customer->currency)!!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-0 total-table-attribute-label">
+                            I.G.T.F. (3%):
+                        </td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value">
 
+                        </td>
+                    </tr>
                     <tr>
                         <td class="py-3"></td>
                         <td class="py-3"></td>
                     </tr>
                     <tr>
                         <td class="border-0 total-border-left total-table-attribute-label">
-                            @lang('pdf_total')
+                            Total a Cancelar:
                         </td>
                         <td
                             class="py-8 border-0 total-border-right item-cell total-table-attribute-value2"
