@@ -37,6 +37,8 @@ class Invoice extends Model implements HasMedia
     public const STATUS_PARTIALLY_PAID = 'PARTIALLY_PAID';
     public const STATUS_PAID = 'PAID';
 
+    public const FISCAL_CUSTOM_FIELD_SLUG  = 'CUSTOM_INVOICE_FISCAL';
+
     protected $dates = [
         'created_at',
         'updated_at',
@@ -319,6 +321,7 @@ class Invoice extends Model implements HasMedia
 
     public static function createInvoice($request)
     {
+        $request = $request->kraterInvoiceRequest();
         $data = $request->getInvoicePayload();
 
         if ($request->has('invoiceSend')) {
@@ -366,12 +369,17 @@ class Invoice extends Model implements HasMedia
         return $invoice;
     }
 
+
+
+
+
     public function updateInvoice($request)
     {
+        $request = $request->kraterInvoiceRequest();
         $deleted_column = $this->getDeletedAtColumn();
         if ( ! empty($this->$deleted_column )){
             $this->changeInvoiceStatus(0);
-            //return 'can_not_update_deleted_invoice';
+            return 'can_not_update_deleted_invoice';
 
         }
         $serial = (new SerialNumberFormatter())
@@ -381,7 +389,10 @@ class Invoice extends Model implements HasMedia
             ->setModelObject($this->id)
             ->setNextNumbers();
 
+
         $data = $request->getInvoicePayload();
+
+
         $oldTotal = $this->total;
 
         $total_paid_amount = $this->total - $this->due_amount;
@@ -436,6 +447,7 @@ class Invoice extends Model implements HasMedia
         if ($request->has('taxes') && (! empty($request->taxes))) {
             self::createTaxes($this, $request->taxes);
         }
+
 
         if ($request->customFields) {
             $this->updateCustomFields($request->customFields);
