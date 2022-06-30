@@ -1485,6 +1485,7 @@
     "feature_not_enabled": "Característica no habilitada.",
     "request_limit_met": "Ha alcanzado el límite de solicitudes.",
     "address_incomplete": "Dirección incompleta",
+    "no_fiscal_no_tax": "Documento no fiscal, debe remover impuestos",
     "complete_and_paid_invoice_can_not_be_edited": "No se pueden editar facturas totalmente pagadas"
   },
   "pdf_estimate_label": "Presupuestar",
@@ -1527,5 +1528,6 @@
   "pdf_bill_to": "Cobrar a,",
   "pdf_ship_to": "Enviar a,",
   "pdf_received_from": "Recibido desde:",
-  "pdf_tax_label": "Impuesto"
+  "pdf_tax_label": "Impuesto",
+  "no_fiscal_no_tax": "Documento no fiscal, debe remover impuestos"
 }

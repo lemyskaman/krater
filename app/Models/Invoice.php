@@ -319,9 +319,17 @@ class Invoice extends Model implements HasMedia
         return $query->paginate($limit);
     }
 
+    public static function validateFiscal($request){
+        if ((($request->has('tax') && $request->tax!=0) || $request->igtf) && !$request->fiscal) {
+            throw new \ErrorException('Documento NO FISCAL, remover todo tipo de impuestos.');
+        }
+    }
     public static function createInvoice($request)
     {
         $request = $request->kraterInvoiceRequest();
+        static::validateFiscal($request);
+
+
         $data = $request->getInvoicePayload();
 
         if ($request->has('invoiceSend')) {
@@ -376,6 +384,8 @@ class Invoice extends Model implements HasMedia
     public function updateInvoice($request)
     {
         $request = $request->kraterInvoiceRequest();
+        static::validateFiscal($request);
+
         $deleted_column = $this->getDeletedAtColumn();
         if ( ! empty($this->$deleted_column )){
             $this->changeInvoiceStatus(0);
@@ -395,7 +405,7 @@ class Invoice extends Model implements HasMedia
 
         $oldTotal = $this->total;
 
-        $total_paid_amount = $this->total - $this->due_amount;
+        $total_paid_amount = $this->payments->sum('amount');//$this->total - $this->due_amount;
 
         $deleted_column = $this->getDeletedAtColumn();
 
@@ -408,21 +418,19 @@ class Invoice extends Model implements HasMedia
             return 'total_invoice_amount_must_be_more_than_paid_amount';
         }
 
-        /*
+
         if ($oldTotal != $request->total) {
             $oldTotal = (int) round($request->total) - (int) $oldTotal;
         } else {
             $oldTotal = 0;
-        }*/
+        }
 
-        $payments_amount = $this->payments->sum('amount');
-        $data['due_amount'] = ($this->due_amount + $oldTotal);
+
+        $data['due_amount'] = ($request->total - $total_paid_amount);
         $data['base_due_amount'] = $data['due_amount'] * $data['exchange_rate'];
         $data['customer_sequence_number'] = $serial->nextCustomerSequenceNumber;
 
         $this->changeInvoiceStatus($data['due_amount']);
-        $data['status']=$this->status;
-        $data['paid_status'] = $this->paid_status;
 
         $this->update($data);
 

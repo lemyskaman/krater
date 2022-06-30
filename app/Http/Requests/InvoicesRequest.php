@@ -13,6 +13,8 @@ class InvoicesRequest extends FormRequest
 {
 
 
+    public $fiscal;
+    public $igtf=false;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -113,11 +115,24 @@ class InvoicesRequest extends FormRequest
 
 
 
-    public function customI2nvoiceIgtfAmount($customField){
-        $igtf_percent=3;//%
-        $customField['value']=$customField['string_answer']  =(int)$this->base_total +($this->base_total*($igtf_percent/100));
+    public function customInvoiceApplyIgtf($customField){
+        $this->igtf = array_key_exists('value',$customField)?(bool)$customField['value']:(bool)$customField['custom_field']['value'];
         return $customField;
     }
+    public function customInvoiceFiscal($customField){
+        $this->fiscal = array_key_exists('value',$customField)?(bool)$customField['value']:(bool)$customField['custom_field']['value'];
+        return $customField;
+    }
+    public function customInvoiceIgtfAmount($customField){
+
+        if ($this->igtf) {
+            $igtf_percent = 3;//%
+            $customField['value'] = $customField['string_answer'] = (int)$this->base_total + ($this->base_total * ($igtf_percent / 100));
+        }
+        return $customField;
+    }
+
+
 
 
     public function kraterInvoiceRequest()
