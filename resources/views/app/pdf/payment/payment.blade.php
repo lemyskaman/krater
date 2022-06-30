@@ -282,18 +282,20 @@
     <div class="header-container">
         <table width="100%">
             <tr>
-                @if ($logo)
-                    <td width="50%" class="header-section-left">
-                        <img style="height: 50px;" class="header-logo" src="{{ $logo }}" alt="Company Logo">
+ <td class="text-left " style="padding-left: 40px">
+                    @if ($logo)
+                        <img class="header-logo" style="height: 50px;" src="{{ $logo }}" alt="Company Logo">
                     @else
-                        @if ($payment->customer)
-                    <td class="header-section-left" style="padding-top:0px;">
-                        <h1 class="header-logo"> {{ $payment->customer->company->name }} </h1>
-                @endif
-                @endif
+                        @if ($payment->customer->company)
+                            <h2 class="header-logo"> {{ $invoice->customer->company->name }} </h2>
+                        @endif
+                    @endif
+                    <div style="lline-height: 80%; font-size: 10px;text-right">
+                            {{$payment->customer->company->name }} Rif: J-500909990-0 - Telefono: {{$payment->customer->company->address->phone }}
+                    </div>
                 </td>
-                <td width="50%" class="header-section-right company-details company-address">
-                    {!! $company_address !!}
+                <td class="text-left" style="color: #9ba2ab">
+                    <h3>Recibo</h3>
                 </td>
             </tr>
         </table>
@@ -302,7 +304,7 @@
     <hr style="border: 0.620315px solid #E8E8E8;">
 
     <p class="content-heading">
-        <span>@lang('pdf_payment_receipt_label')</span>
+        <span>Recibo</span>
     </p>
 
     <div class="content-wrapper">
