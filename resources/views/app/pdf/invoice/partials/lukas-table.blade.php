@@ -193,7 +193,7 @@
                         <td
                             class="py-8 border-0 total-border-right item-cell total-table-attribute-value2-ves"
                         >
-                             {!! format_money_pdf(($invoice->total+$igtf_amount)*$bcv_rate, $invoice->customer->currency)!!}
+                             {!! format_money_pdf(($invoice->total+$igtf_amount)*$bcv_rate, $bcv_rate_currency)!!}
                         </td>
                     </tr>
                 </table>
