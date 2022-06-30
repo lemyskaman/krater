@@ -176,6 +176,7 @@
                 :store="store"
                 :store-prop="storeProp"
                 @update="updateTax"
+                @remove="itemTaxRemove"
               />
             </td>
           </tr>
@@ -314,9 +315,9 @@ const selectedCurrency = computed(() => {
 })
 
 const showRemoveButton = computed(() => {
-  if (props.store[props.storeProp].items.length == 1) {
+  /*if (props.store[props.storeProp].items.length == 1) {
     return false
-  }
+  }*/
   return true
 })
 
@@ -508,6 +509,11 @@ function updateItemAttribute(attribute, value) {
   props.store.$patch((state) => {
     state[props.storeProp].items[props.index][attribute] = value
   })
+
+  syncItemToStore()
+}
+
+function itemTaxRemove(index){
 
   syncItemToStore()
 }

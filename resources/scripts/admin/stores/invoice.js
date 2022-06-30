@@ -75,7 +75,7 @@ export const useInvoiceStore = (useWindow = false) => {
         ) {
           return this.getTotalSimpleTax + this.getTotalCompoundTax
         }
-        return _.sumBy(this.newInvoice.items, function (tax) {
+        return _.sumBy(this.newInvoice.items, function (tax) {    
           return tax.tax
         })
       },

@@ -399,9 +399,7 @@ class Invoice extends Model implements HasMedia
 
         $deleted_column = $this->getDeletedAtColumn();
 
-        if ($this->status===self::STATUS_COMPLETED && $this->paid_status===self::STATUS_PAID ) {
-            return 'complete_and_paid_invoice_can_not_be_edited';
-        }
+
         if ($total_paid_amount > 0 && $this->customer_id !== $request->customer_id) {
             return 'customer_cannot_be_changed_after_payment_is_added';
         }
@@ -410,12 +408,14 @@ class Invoice extends Model implements HasMedia
             return 'total_invoice_amount_must_be_more_than_paid_amount';
         }
 
+        /*
         if ($oldTotal != $request->total) {
             $oldTotal = (int) round($request->total) - (int) $oldTotal;
         } else {
             $oldTotal = 0;
-        }
+        }*/
 
+        $payments_amount = $this->payments->sum('amount');
         $data['due_amount'] = ($this->due_amount + $oldTotal);
         $data['base_due_amount'] = $data['due_amount'] * $data['exchange_rate'];
         $data['customer_sequence_number'] = $serial->nextCustomerSequenceNumber;
@@ -423,6 +423,7 @@ class Invoice extends Model implements HasMedia
         $this->changeInvoiceStatus($data['due_amount']);
         $data['status']=$this->status;
         $data['paid_status'] = $this->paid_status;
+
         $this->update($data);
 
         $company_currency = CompanySetting::getSetting('currency', $request->header('company'));
@@ -713,7 +714,6 @@ class Invoice extends Model implements HasMedia
     {
         $this->due_amount -= $amount;
         $this->base_due_amount = $this->due_amount * $this->exchange_rate;
-
         $this->changeInvoiceStatus($this->due_amount);
     }
 

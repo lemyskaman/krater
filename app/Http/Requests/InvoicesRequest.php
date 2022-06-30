@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 class InvoicesRequest extends FormRequest
 {
 
-    public $fiscal;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -112,31 +111,7 @@ class InvoicesRequest extends FormRequest
         return $rules;
     }
 
-    public function customInvoiceFiscal($customField){
 
-
-
-        if (array_key_exists('value',$customField)){
-            $this->fiscal = $customField['value'];
-        }else if (array_key_exists('custom_field',$customField)){
-            $this->fiscal = $customField['custom_field']['value'];
-        }
-
-        $no_taxed_items = collect($this->items)->map(function($item){
-
-            unset($item['taxes']);
-            $item['total']=$item['sub_total'];
-            $item['totalTax'] = 0;
-            $item['totalSimpleTax'] = 0;
-            $item['totalCompoundTax'] = 0;
-            $item['tax'] = 0;
-            return $item;
-        });
-
-        $this->tax =  0 ;
-        $this->total = $this->sub_total;
-        return $customField;
-    }
 
     public function customI2nvoiceIgtfAmount($customField){
         $igtf_percent=3;//%

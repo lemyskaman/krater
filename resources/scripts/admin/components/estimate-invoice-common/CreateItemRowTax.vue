@@ -225,8 +225,14 @@ function openTaxModal() {
 }
 
 function removeTax(index) {
+
   props.store.$patch((state) => {
     state[props.storeProp].items[props.itemIndex].taxes.splice(index, 1)
+    //console.log(state[props.storeProp])
+
   })
+  console.log('se removio impuesto ',1)
+  emit('remove',props.itemIndex);
+
 }
 </script>
