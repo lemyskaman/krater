@@ -604,12 +604,18 @@ class Invoice extends Model implements HasMedia
         App::setLocale($locale);
 
         $logo = $company->logo_path;
-        $bcv_rate = $this->getCustomFieldValueBySlug('CUSTOM_INVOICE_BCV_RATE');
+        $bcv_rate = (float) $this->getCustomFieldValueBySlug('CUSTOM_INVOICE_BCV_RATE');
         $payment_contidion= $this->getCustomFieldValueBySlug('CUSTOM_INVOICE_PAYMENT_CONDITION');
-        $bcv_rate_currency = Currency::whereCode('VES')->get();
+        $fiscal  = (bool)$this->getCustomFieldValueBySlug('CUSTOM_INVOICE_FISCAL');
+        $igtf = (bool)$this->getCustomFieldValueBySlug('CUSTOM_INVOICE_APPLY_IGTF');
+        $igtf_amount = (int)$this->getCustomFieldValueBySlug('CUSTOM_INVOICE_IGTF_AMOUNT');
+        $bcv_rate_currency = Currency::whereCode('VES')->get()[0];
         view()->share([
             'bcv_rate_currency'=>$bcv_rate_currency,
-            'bcv_rate'=>(int) $bcv_rate,
+            'bcv_rate'=> $bcv_rate,
+            'fiscal' => $fiscal,
+            'igtf' => $igtf,
+            'igtf_amount'=> $igtf_amount,
             'payment_condition'=>$payment_contidion,
             'invoice' => $this,
             'customFields' => $customFields,

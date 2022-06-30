@@ -365,9 +365,23 @@
     <div class="header-container">
         <table width="100%">
             <tr>
-                <td class="text-center">
-
+                @if (!$fiscal)
+                <td class="text-left " style="padding-left: 40px">
+                    @if ($logo)
+                        <img class="header-logo" style="height: 50px;" src="{{ $logo }}" alt="Company Logo">
+                    @else
+                        @if ($invoice->customer->company)
+                            <h2 class="header-logo"> {{ $invoice->customer->company->name }} </h2>
+                        @endif
+                    @endif
+                    <div style="lline-height: 80%; font-size: 10px;text-right">
+                            {{$invoice->customer->company->name }} Rif: J-500909990-0 - Telefono: {{$invoice->customer->company->address->phone }}
+                    </div>
                 </td>
+                <td class="text-left" style="color: #9ba2ab">
+                    <h3>Nota de Entrega</h3>
+                </td>
+                @endif
             </tr>
         </table>
 

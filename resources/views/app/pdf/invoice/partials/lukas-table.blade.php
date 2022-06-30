@@ -14,8 +14,8 @@
     </tr>
     @php
         $index = 1 ;
-        $taxless = 0;
-        $with_tax = 0;
+        $taxless_amount = 0;
+        $amount_with_tax = 0;
     @endphp
     @foreach ($invoice->items as $item)
         <tr class="item-row">
@@ -75,9 +75,9 @@
             @endif
             @php
                 if ($item->tax == 0){
-                    $taxless += $item->total ;
+                    $taxless_amount += $item->total ;
                 }else{
-                    $with_tax += $item->total;
+                    $amount_with_tax += $item->total;
                 }
             @endphp
             <td
@@ -100,7 +100,7 @@
             <td style="text-align: left">
 
                 <div style="font-size: 10px"> Operaciones en moneda extranjeras -Monto equivalente en Bolívares:<br>
-                Tasa de cambio a la factura Bs. <b>{{number_format($bcv_rate||1,2)}}</b> /  1 US $
+                Tasa de cambio a la factura Bs. <b>{!! format_money_pdf($bcv_rate*100,$bcv_rate_currency)!!}</b> /  1 US $
                 </div>
                  <table width="100%" cellspacing="0px" border="0"
                        class="total-display-table-ves @if(count($invoice->items) > 12) page-break @endif">
@@ -108,16 +108,20 @@
                      <tr>
                         <td class="border-0 total-table-attribute-label">@lang('pdf_subtotal')</td>
                         <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
-                            Bs. {{number_format(($invoice->sub_total/100)*$bcv_rate,2) }}
+                            {!! format_money_pdf($invoice->sub_total*$bcv_rate,$bcv_rate_currency) !!}
                         </td>
                     </tr>
-                    <tr>
-                          <td class="border-0 total-table-attribute-label">
-                              Monto Exento:
-                          </td>
-                          <td class="py-2 border-0 item-cell total-table-attribute-value">
-
-                          </td>
+                     <tr>
+                        <td class="border-0 total-table-attribute-label">Monto Exento:</td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                            {!! format_money_pdf($taxless_amount*$bcv_rate,$bcv_rate_currency) !!}
+                        </td>
+                    </tr>
+                     <tr>
+                        <td class="border-0 total-table-attribute-label">Base Imponible:</td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                            {!! format_money_pdf($amount_with_tax*$bcv_rate,$bcv_rate_currency) !!}
+                        </td>
                     </tr>
                     @if($invoice->discount > 0)
                         @if ($invoice->discount_per_item === 'NO')
@@ -132,7 +136,7 @@
                                 </td>
                                 <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
                                     @if($invoice->discount_type === 'fixed')
-                                     Bs.  {!! number_format(($invoice->discount_val/100)*$bcv_rate,2)   !!}
+                                     {!! format_money_pdf($invoice->discount_val*$bcv_rate,$bcv_rate_currency) !!}
                                     @endif
                                     @if($invoice->discount_type === 'percentage')
                                        {{$item->discount}}%
@@ -149,7 +153,7 @@
                                     {{$tax->name.' ('.$tax->percent.'%)'}}
                                 </td>
                                 <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
-                                   Bs. {!! number_format(($tax->amount/100)*$bcv_rate,2)   !!}
+                                   {!! format_money_pdf($tax->amount*$bcv_rate,$bcv_rate_currency) !!}
                                 </td>
                             </tr>
 
@@ -161,32 +165,42 @@
                                     {{$tax->name.' ('.$tax->percent.'%)'}}
                                 </td>
                                 <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
-                                    Bs. {!! number_format(($tax->amount/100)*$bcv_rate,2)  !!}
+                                   {!! format_money_pdf($tax->amount*$bcv_rate,$bcv_rate_currency) !!}
                                 </td>
                             </tr>
                         @endforeach
                     @endif
-
-
+                     <tr>
+                        <td class="border-0 total-table-attribute-label">Total Facturado:</td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                            {!! format_money_pdf($invoice->total*$bcv_rate,$bcv_rate_currency) !!}
+                        </td>
+                    </tr>
+                     <tr>
+                        <td class="border-0 total-table-attribute-label">I.G.T.F. (3%):</td>
+                        <td class="py-2 border-0 item-cell total-table-attribute-value2-ves">
+                            {!! format_money_pdf($igtf_amount*$bcv_rate,$bcv_rate_currency) !!}
+                        </td>
+                    </tr>
                     <tr>
                         <td class="py-3"></td>
                         <td class="py-3"></td>
                     </tr>
                     <tr>
                         <td class="border-0 total-border-left total-table-attribute-label">
-                            @lang('pdf_total')
+                            Total a Cancelar:
                         </td>
                         <td
                             class="py-8 border-0 total-border-right item-cell total-table-attribute-value2-ves"
                         >
-
+                             {!! format_money_pdf(($invoice->total+$igtf_amount)*$bcv_rate, $invoice->customer->currency)!!}
                         </td>
                     </tr>
                 </table>
 
             </td>
 
-            <!-- TOTALES MONEDA DE EMPRESA -->
+            <!-- TOTALES MONEDA DE CLIENTE -->
 
             <td>
                 <table width="100%" cellspacing="0px" border="0"
@@ -202,7 +216,7 @@
                               Monto Exento:
                           </td>
                           <td class="py-2 border-0 item-cell total-table-attribute-value">
-                               {!!format_money_pdf($taxless,$invoice->customer->currency) !!}
+                               {!! format_money_pdf($taxless_amount,$invoice->customer->currency) !!}
                           </td>
                     </tr>
                     <tr>
@@ -210,7 +224,7 @@
                             Base Imponible:
                         </td>
                         <td class="py-2 border-0 item-cell total-table-attribute-value">
-                            {!! format_money_pdf($with_tax, $invoice->customer->currency)!!}
+                            {!! format_money_pdf($amount_with_tax, $invoice->customer->currency)!!}
                         </td>
                     </tr>
                     @if($invoice->discount > 0)
@@ -272,7 +286,7 @@
                             I.G.T.F. (3%):
                         </td>
                         <td class="py-2 border-0 item-cell total-table-attribute-value">
-
+                            {!! format_money_pdf($igtf_amount, $invoice->customer->currency)!!}
                         </td>
                     </tr>
                     <tr>
@@ -287,7 +301,7 @@
                             class="py-8 border-0 total-border-right item-cell total-table-attribute-value2"
 
                         >
-                            {!! format_money_pdf($invoice->total, $invoice->customer->currency)!!}
+                            {!! format_money_pdf(($invoice->total+$igtf_amount), $invoice->customer->currency)!!}
                         </td>
                     </tr>
                 </table>

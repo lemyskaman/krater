@@ -127,8 +127,13 @@ class InvoicesRequest extends FormRequest
 
         if ($this->igtf) {
             $igtf_percent = 3;//%
-            $customField['value'] = $customField['string_answer'] = (int)$this->base_total + ($this->base_total * ($igtf_percent / 100));
+            $value =(int)round($this->total * ($igtf_percent/10),1);
+
+        }else{
+            $value = 0;
         }
+        $customField['value'] = $value;
+        $customField['string_answer'] = "$value" ;
         return $customField;
     }
 
