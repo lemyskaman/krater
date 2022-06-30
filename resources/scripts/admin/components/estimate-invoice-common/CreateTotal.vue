@@ -313,6 +313,7 @@ const defaultCurrency = computed(() => {
   }
 })
 
+
 function selectFixed() {
   if (props.store[props.storeProp].discount_type === 'fixed') {
     return
