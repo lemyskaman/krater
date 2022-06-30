@@ -98,7 +98,7 @@
             line-height: 18px;
             padding-right: 40px;
             text-align: left;
-            color: #55547A;
+            color: #557A;
         }
 
         .attribute-value {
@@ -118,7 +118,7 @@
         .shipping-address {
             font-size: 12px;
             line-height: 15px;
-            color: #595959;
+            color: #040405;
             padding: 45px 0px 0px 40px;
             margin: 0px;
             width: 160px;
@@ -153,7 +153,7 @@
         .billing-address {
             font-size: 12px;
             line-height: 15px;
-            color: #595959;
+            color: #040405;
             padding: 10px 0px 0px 30px;
             margin: 0px;
             width: 100%;
@@ -178,7 +178,7 @@
             text-align: center;
             color: rgba(0, 0, 0, 0.85);
             padding: 5px;
-            color: #55547A;
+            color: #040405;
         }
 
         tr.item-table-heading-row th {
@@ -201,7 +201,7 @@
         }
 
         .item-description {
-            color: #595959;
+            color: #040405;
             font-size: 9px;
             line-height: 12px;
         }
@@ -235,7 +235,7 @@
 
         .total-table-attribute-label {
             font-size: 11px;
-            color: #55547A;
+            color: #040405;
             text-align: left;
             padding-left: 10px;
         }
@@ -262,7 +262,7 @@
             font-weight: bold;
             text-align: right;
             font-size: 11px;
-            color: #4e555b;
+            color: #040405;
             padding-right: 10px;
             padding-top: 1px;
             padding-bottom: 1px;
@@ -286,7 +286,7 @@
 
         .notes {
             font-size: 10px;
-            color: #595959;
+            color: #040405;
             margin-top: 15px;
             margin-left: 30px;
             width: 700px;
@@ -308,7 +308,7 @@
         /* -- Helpers -- */
 
         .text-primary {
-            color: #5851DB;
+            color: #040405;
         }
 
 
